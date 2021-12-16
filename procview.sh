@@ -7,7 +7,7 @@ REFRESH_TIME=1
 while [ $( pgrep -P ${PID} | wc -l ) -gt 1 ]
 do
 	# salvando informações de processos
-	ps aux | tr -s " " | tr -d "<>" | tail -n +2 > procs.txt
+	ps aux | tr -s " " | tr -d "<>" | tail -10 > procs.txt
 
 	# guardando informações de processos que serão usadas
 	cut -d " " -f 2 procs.txt > pid.txt
@@ -26,13 +26,13 @@ do
 	cat procs.txt
 
 	sleep ${REFRESH_TIME}
+	
+	echo -e "\f"
 
-done | yad --center					\
+done | yad --list 					\
 	--title="ProcView - Process Visualizer"		\
-	--width=700 --height=700			\
+	--width=700 --height=700 --center --on-top	\
 	--window-icon="icon.ico"			\
-	--tail						\
-	--list						\
 	--column="PID":NUM				\
 	--column="User":TEXT 				\
 	--column="CPU(%)":FLT 				\
@@ -45,7 +45,7 @@ done | yad --center					\
 	--button="Start process":"ls"			\
 	--button="Schedule process":"ls"		\
 	--button="Process Graphic":"ls"			\
-	--button="Kill":"ls"				\
+	--button="Kill:echo oi"				\
 
 # removendo arquivos desnescessários
 rm -f pid.txt usr.txt cpu.txt mem.txt vsz.txt rss.txt stt.txt cmd.txt procs.txt
