@@ -5,22 +5,11 @@ REFRESH_TIME=3
 
 update_procs(){
 	# salvando informações de processos
-	ps aux | tr -s " " | tr -d "<>" > procs.txt
+	ps aux | tr -s " " | tr -d "<>" > procs.bkp.txt
 
 	# guardando informações de processos que serão usadas
-	cut -d " " -f 2 procs.txt > pid.txt
-	cut -d " " -f 1 procs.txt > usr.txt
-	cut -d " " -f 3 procs.txt > cpu.txt
-	cut -d " " -f 4 procs.txt > mem.txt
-	cut -d " " -f 5 procs.txt > vsz.txt
-	cut -d " " -f 6 procs.txt > rss.txt
-	cut -d " " -f 8 procs.txt > stt.txt
-	cut -d " " -f 11 procs.txt > cmd.txt
+	cat procs.bkp.txt | awk 'NR > 1 { print $2"\n"$1"\n"$3"\n"$4"\n"$5"\n"$6"\n"$8"\n"$11 }' > procs.txt
 
-	# formatando tabela com as informações de processos que serão usadas
-	paste pid.txt usr.txt cpu.txt mem.txt vsz.txt rss.txt stt.txt cmd.txt \
-	| tr "\t" "\n" > procs.txt
-	
 	cat procs.txt	
 }
 
@@ -53,7 +42,6 @@ update_screen(){
 	done
 }
 
-
 # enquanto a caixa de diálogo estiver em execução
 update_screen | yad --list --add-on-top  					\
 	--title="ProcView - Process Visualizer"		\
@@ -75,5 +63,5 @@ update_screen | yad --list --add-on-top  					\
 	--button="Kill:echo oi"				\
 
 # removendo arquivos desnescessários
-rm -f pid.txt usr.txt cpu.txt mem.txt vsz.txt rss.txt stt.txt cmd.txt procs.txt
+rm -f procs.txt
 
