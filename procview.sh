@@ -47,6 +47,7 @@ main(){
 	--window-icon="icon.ico"			\
 	--dclick-action="echo 'abcd'"			\
 	--grid-lines="both"				\
+	--column="@fore@"				\
 	--column="@back@"				\
 	--column="PID:NUM"				\
 	--column="User:TEXT" 				\

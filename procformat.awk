@@ -13,15 +13,24 @@ BEGIN{
 	MID_BCK_COLOR="yellow"
 	LOW_BCK_COLOR="green"
 
-	MAIN_FORE_COLOR="white"
+	CLEAN_FORE_COLOR="white"
+	DARK_FORE_COLOR="black"
 }
 
 NR > 1 {
-	color=""
+	bck_color=""
+	fore_color=CLEAN_FORE_COLOR
 
-	if ( $6 >= MAX ) color=MAX_BCK_COLOR;
-	else if ( $6 >= MID ) color=MID_BCK_COLOR;
-	else color=LOW_BCK_COLOR;
+	if ( $6 >= MAX ){
+		 bck_color=MAX_BCK_COLOR;
+	}
+	else if ( $6 >= MID ){
+		bck_color=MID_BCK_COLOR;
+		fore_color=DARK_FORE_COLOR
+	}
+	else{
+		bck_color=LOW_BCK_COLOR;
+	}
 
-	print color"\n"$2"\n"$1"\n"$3"\n"$4"\n"$5"\n"$6"\n"$9"\n"$11
+	print fore_color"\n"bck_color"\n"$2"\n"$1"\n"$3"\n"$4"\n"$5"\n"$6"\n"$9"\n"$11
 }
