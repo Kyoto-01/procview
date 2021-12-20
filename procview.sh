@@ -33,19 +33,35 @@ function update_screen(){
 }
 
 function set_update_screen(){
+	# ativa: $1 = 1
+	# desativa: $1 = 0
+
 	echo "$1" > update.txt
 }
 
+function plot_chart(){
+	# TODO: plotar gráfico
+	echo
+}
+
+function kill_proc(){
+	# TODO: matar processo
+	./$0
+}
+
 function main(){
+
 	export -f set_update_screen
+	export -f plot_chart
+	export -f kill_proc
 
 	set_update_screen 1
 
-	$( yad --list					\
+	GUI=$( yad --list				\
 	--title="ProcView - Process Viewer"		\
 	--width=700 --height=700 --center --on-top	\
 	--window-icon="icon.ico"			\
-	--dclick-action="echo 'abcd'"			\
+	--dclick-action="bash -c 'plot_chart %s'"	\
 	--grid-lines="both"				\
 	--column="@fore@"				\
 	--column="@back@"				\
@@ -62,11 +78,17 @@ function main(){
 	--button="Filter by user:ls"			\
 	--button="Start process:ls"	    		\
 	--button="Schedule process:ls"			\
-	--button="Kill:ls" < <( update_screen ) &)
+	--button="Kill:0" < <( update_screen )&
+	)
 
 	# removendo arquivos desnescessários
-	rm -f procs.txt update.txt 
+	rm -f procs.txt update.txt
+
+	# Se saída da GUI for não vazia, um processo 
+	# foi especificado para ser morto.
+	# Senão, o processo atual será morto 
+	[ -n "${GUI}" ] && kill_proc ${GUI}
 }
 
-main
+main &> /dev/null
 
