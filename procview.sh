@@ -10,7 +10,7 @@
 UPDATE_INTERVAL=5
 
 
-update_procs(){
+function update_procs(){
 	# salvando informações de processos
 	ps aux | sort -rk 9 | tr -s " " | tr -d "<>" > procs.txt
 
@@ -20,7 +20,7 @@ update_procs(){
 	cat procs.txt
 }
 
-update_screen(){
+function update_screen(){
 	while [ -f update.txt ] 
 	do
 		if [ "$( cat update.txt )" -eq 1 ]
@@ -32,11 +32,11 @@ update_screen(){
 	done
 }
 
-set_update_screen(){
+function set_update_screen(){
 	echo "$1" > update.txt
 }
 
-main(){
+function main(){
 	export -f set_update_screen
 
 	set_update_screen 1
