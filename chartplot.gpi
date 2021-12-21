@@ -1,3 +1,11 @@
+# chartdata.txt deverá ser criado antes de chamar 
+# o gnuplot com as seguintes instruções
+#
+# Ex.: chartdata.txt
+#	Label			Usage	CPU	Usage	RAM
+#	Process with ID: 1234	5.5	1	3.7	2
+#
+#
 reset
 set encoding utf8
 set datafile separator tab
@@ -6,9 +14,10 @@ set style line 2 lc rgb '#ff0000'
 set xrange [-0.5:0.5]
 set yrange [0:100]
 set title '{/=18: Resource Usage Chart}'
+set ylabel '% usage'
 set style data histograms
 set style histogram errorbars gap 1 linewidth 1
 set style fill transparent solid 1 border lt -1
-plot 'arquivo_dados.txt' using 2:3:xtic(1) linestyle 1 title '%CPU' ,\
-'arquivo_dados.txt' using 4:5:xtic(1) linestyle 2 title '%RAM'
+plot 'chartdata.txt' using 2:3:xtic(1) linestyle 1 title '%CPU' ,\
+'chartdata.txt' using 4:5:xtic(1) linestyle 2 title '%RAM'
 
